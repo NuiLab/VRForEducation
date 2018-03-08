@@ -35,10 +35,25 @@ public:
 private:
 
 	UPROPERTY(EditAnywhere)
-		ATriggerVolume* IFTriggerVolume = nullptr;
+		ATriggerVolume* ARRTriggerVolume0 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		float TotalApples = 1.f;
+		ATriggerVolume* ARRTriggerVolume1 = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* ARRTriggerVolume2 = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* ARRTriggerVolume3 = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* ARRTriggerVolume4 = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		ATriggerVolume* ARRTriggerVolume5 = nullptr;
+
+	UPROPERTY(EditAnywhere)
+		bool CorrectBookSequence = false;
 
 	// The owning door
 	AActor* Owner = nullptr;

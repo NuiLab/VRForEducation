@@ -20,9 +20,34 @@ void UOpenDoor::BeginPlay()
 	Super::BeginPlay();
 	Owner = GetOwner();
 
-	if (!IFTriggerVolume)
+	if (!ARRTriggerVolume0)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s missing IF STATEMENT Trigger Volume."), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 0!"), *GetOwner()->GetName());
+	}
+
+	if (!ARRTriggerVolume1)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 1!"), *GetOwner()->GetName());
+	}
+
+	if (!ARRTriggerVolume2)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 2!"), *GetOwner()->GetName());
+	}
+
+	if (!ARRTriggerVolume3)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 3!"), *GetOwner()->GetName());
+	}
+
+	if (!ARRTriggerVolume4)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 4!"), *GetOwner()->GetName());
+	}
+
+	if (!ARRTriggerVolume5)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s missing Trigger Volume for Index 5!"), *GetOwner()->GetName());
 	}
 	
 }
@@ -47,7 +72,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 bool UOpenDoor::AllPlatesPressed()
 {
-	return (GetTotalActorsOnPlate() > TotalApples);
+	return CorrectBookSequence;
 }
 
 float UOpenDoor::GetTotalActorsOnPlate()
@@ -56,8 +81,8 @@ float UOpenDoor::GetTotalActorsOnPlate()
 
 	// Find all the overlapping authors
 	TArray<AActor*> ActorsArray;
-	if (!IFTriggerVolume) { return TotalActors; }
-	IFTriggerVolume->GetOverlappingActors(OUT ActorsArray);
+	if (!ARRTriggerVolume0) { return TotalActors; }
+	ARRTriggerVolume0->GetOverlappingActors(OUT ActorsArray);
 
 	TotalActors = ActorsArray.Num();
 
