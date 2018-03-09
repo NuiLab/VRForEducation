@@ -32,9 +32,9 @@ void UScaleWeightDisplayer::TickComponent(float DeltaTime, ELevelTick TickType, 
 		
 	int32 height = 10;
 
-		GoUp.Broadcast(height);
+		//GoUp.Broadcast(height);
 
-		GoDown.Broadcast(height*2);
+		//GoDown.Broadcast(height*2);
 	// ...
 }
 
