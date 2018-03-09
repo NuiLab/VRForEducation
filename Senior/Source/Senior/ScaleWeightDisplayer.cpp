@@ -18,7 +18,7 @@ UScaleWeightDisplayer::UScaleWeightDisplayer()
 void UScaleWeightDisplayer::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	// ...
 	
 }
@@ -28,7 +28,13 @@ void UScaleWeightDisplayer::BeginPlay()
 void UScaleWeightDisplayer::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	//ActivateScale();
+		
+	int32 height = 10;
 
+		GoUp.Broadcast(height);
+
+		GoDown.Broadcast(height*2);
 	// ...
 }
 
@@ -53,7 +59,7 @@ void UScaleWeightDisplayer::GetWeight(int left, int right)
 	}
 
 	TArray<AActor*> ActorsRightSide;
-	//if (!ActorsLeftSide) { return TotalMass; }
+	//if (!ActorsRightSide) { return TotalMass; }
 	ScaleRightSide->GetOverlappingActors(OUT ActorsRightSide);
 
 	for (auto* Actor : ActorsRightSide)
@@ -77,14 +83,14 @@ void UScaleWeightDisplayer::DisplayWeight(int left, int right)
 {
 	if (left > right)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT"));
+		UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT, Left: %d, Right: %d"), left, right);
 	}
 	else if (left < right)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT"));
+		UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT, Left: %d, Right: %d"), left, right);
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Balanced"));
+		UE_LOG(LogTemp, Warning, TEXT("Balanced, Left: %d, Right: %d"), left, right);
 	}
 }

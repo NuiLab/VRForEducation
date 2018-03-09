@@ -3,10 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Engine/TriggerVolume.h"
 #include "Components/ActorComponent.h"
-#include "Engine/TriggerBox.h"
 #include "ScaleWeightDisplayer.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeightEvent, int32, Height);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SENIOR_API UScaleWeightDisplayer : public UActorComponent
@@ -25,6 +26,12 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
+		FWeightEvent GoUp;
+
+	UPROPERTY(BlueprintAssignable)
+		FWeightEvent GoDown;
+
 	void ActivateScale();
 
 	void GetWeight(int left, int right);
@@ -33,10 +40,10 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere)
-		ATriggerBox* ScaleLeftSide = nullptr;
+		ATriggerVolume* ScaleLeftSide = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		ATriggerBox* ScaleRightSide = nullptr;
+		ATriggerVolume* ScaleRightSide = nullptr;
 
 	//Keep track of left side weigth
 	int left;
