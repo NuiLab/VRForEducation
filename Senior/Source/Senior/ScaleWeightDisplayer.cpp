@@ -9,8 +9,6 @@ UScaleWeightDisplayer::UScaleWeightDisplayer()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -18,9 +16,6 @@ UScaleWeightDisplayer::UScaleWeightDisplayer()
 void UScaleWeightDisplayer::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	// ...
-	
 }
 
 
@@ -29,14 +24,8 @@ void UScaleWeightDisplayer::TickComponent(float DeltaTime, ELevelTick TickType, 
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	//ActivateScale();
-		
-	int32 height = 10;
-
-		//GoUp.Broadcast(height);
-
-		//GoDown.Broadcast(height*2);
-	// ...
 }
+
 
 // Called when the user presses a button
 void UScaleWeightDisplayer::ActivateScale()
@@ -50,7 +39,6 @@ void UScaleWeightDisplayer::ActivateScale()
 void UScaleWeightDisplayer::GetWeight(int left, int right)
 {
 	TArray<AActor*> ActorsLeftSide;
-	//if (!ActorsLeftSide) { return TotalMass; }
 	ScaleLeftSide->GetOverlappingActors(OUT ActorsLeftSide);
 
 	for (auto* Actor : ActorsLeftSide)
@@ -59,7 +47,6 @@ void UScaleWeightDisplayer::GetWeight(int left, int right)
 	}
 
 	TArray<AActor*> ActorsRightSide;
-	//if (!ActorsRightSide) { return TotalMass; }
 	ScaleRightSide->GetOverlappingActors(OUT ActorsRightSide);
 
 	for (auto* Actor : ActorsRightSide)
@@ -83,14 +70,23 @@ void UScaleWeightDisplayer::DisplayWeight(int left, int right)
 {
 	if (left > right)
 	{
+		FVector heightL = { 0.0f, 0.0f, -15.0f };
+		FVector heightR = { 0.0f, 0.0f, 15.0f };
+		MagicScale.Broadcast(heightL, heightR);
 		UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT, Left: %d, Right: %d"), left, right);
 	}
 	else if (left < right)
 	{
+		FVector heightL = { 0.0f, 0.0f, 15.0f };
+		FVector heightR = { 0.0f, 0.0f, -15.0f };
+		MagicScale.Broadcast(heightL, heightR);
 		UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT, Left: %d, Right: %d"), left, right);
 	}
 	else
 	{
+		FVector heightL = { 0.0f, 0.0f, 0.0f };
+		FVector heightR = { 0.0f, 0.0f, 0.0f };
+		MagicScale.Broadcast(heightL, heightR);
 		UE_LOG(LogTemp, Warning, TEXT("Balanced, Left: %d, Right: %d"), left, right);
 	}
 }

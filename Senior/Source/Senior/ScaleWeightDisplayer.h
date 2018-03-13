@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "ScaleWeightDisplayer.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWeightEvent, int32, Height);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FWeightEvent, FVector, LeftHeight, FVector, RightHeight);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SENIOR_API UScaleWeightDisplayer : public UActorComponent
@@ -26,13 +26,11 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(BlueprintAssignable, Category = "EventDispatchers")
-		FWeightEvent GoUp;
+	UPROPERTY(BlueprintAssignable, Category = "Scale")
+		FWeightEvent MagicScale;
 
-	UPROPERTY(BlueprintAssignable)
-		FWeightEvent GoDown;
-
-	void ActivateScale();
+	UFUNCTION(BlueprintCallable, Category = "ScaleFunction")
+		void ActivateScale();
 
 	void GetWeight(int left, int right);
 
@@ -45,13 +43,12 @@ private:
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ScaleRightSide = nullptr;
 
-	//Keep track of left side weigth
+	// Weight for left side of scale
 	int left;
 
-	//Keep track of right side weigth
+	// Weight for right side of scale
 	int right;
 
-	//Count the ammount of apples placed on the weight
+	// Counter for the number of times the scale was activated
 	int counter = 0;
-		
 };
