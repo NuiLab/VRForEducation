@@ -38,46 +38,49 @@ private:
 		ATriggerVolume* ARRTriggerVolume0 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex0 = "Book_1";
+		FString BookIndex0 = "Book_8";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume1 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex1 = "Book_2";
+		FString BookIndex1 = "Book_14";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume2 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex2 = "Book_3";
+		FString BookIndex2 = "Book_17";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume3 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex3 = "Book_4";
+		FString BookIndex3 = "Book_20";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume4 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex4 = "Book_5";
+		FString BookIndex4 = "Book_23";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume5 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex5 = "Book_6";
+		FString BookIndex5 = "Book_26";
 
 	UPROPERTY(EditAnywhere)
-		bool CorrectBookSequence = false;
+		class ULightComponent* ARR_TopLight = nullptr;
+
+	//UPROPERTY(EditAnywhere)
+		//bool CorrectBookSequence = false;
 
 	// The owning door
 	AActor* Owner = nullptr;
 
 	//Returns total Ammount of Actors
-	float GetTotalActorsOnPlate();
+	bool CorrectBookSequence();
 
 	//Returns If all plates are activated
 	bool AllPlatesPressed();

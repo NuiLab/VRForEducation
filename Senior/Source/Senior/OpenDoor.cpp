@@ -72,20 +72,85 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 
 bool UOpenDoor::AllPlatesPressed()
 {
-	return CorrectBookSequence;
+	return CorrectBookSequence();
 }
 
-float UOpenDoor::GetTotalActorsOnPlate()
+bool UOpenDoor::CorrectBookSequence()
 {
-	float TotalActors = 0.f;
+	bool Book0 = false;
+	bool Book1 = false;
+	bool Book2 = false;
+	bool Book3 = false;
+	bool Book4 = false;
+	bool Book5 = false;
+
+	//UE_LOG(LogTemp, Error, TEXT("COrrect Book Sequence Called"));
 
 	// Find all the overlapping authors
-	TArray<AActor*> ActorsArray;
-	if (!ARRTriggerVolume0) { return TotalActors; }
-	ARRTriggerVolume0->GetOverlappingActors(OUT ActorsArray);
+	TArray<AActor*> BookArray;
+	if (!ARRTriggerVolume0) { return false; }
+	if (!ARRTriggerVolume1) { return false; }
+	if (!ARRTriggerVolume2) { return false; }
+	if (!ARRTriggerVolume3) { return false; }
+	if (!ARRTriggerVolume4) { return false; }
+	if (!ARRTriggerVolume5) { return false; }
+	
+	//UE_LOG(LogTemp, Error, TEXT("All Plates exist"));
 
-	TotalActors = ActorsArray.Num();
+	ARRTriggerVolume0->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex0)
+		{
+			Book0 = true;
+		}
+	}
 
-	return TotalActors;
+	ARRTriggerVolume1->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex1)
+		{
+			Book1 = true;
+		}
+	}
+
+	ARRTriggerVolume2->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex2)
+		{
+			Book2 = true;
+		}
+	}
+
+	ARRTriggerVolume3->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex3)
+		{
+			Book3 = true;
+		}
+	}
+
+	ARRTriggerVolume4->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex4)
+		{
+			Book4 = true;
+		}
+	}
+
+	ARRTriggerVolume5->GetOverlappingActors(OUT BookArray);
+	if (BookArray.Num() == 1)
+	{
+		if (*BookArray[0]->GetName() == BookIndex5)
+		{
+			Book5 = true;
+		}
+	}
+	
+	return Book0 && Book1 && Book2 & Book3 && Book4 && Book5;
 }
 
