@@ -26,10 +26,10 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	UPROPERTY(BlueprintAssignable, Category = "Scale")
+	UPROPERTY(BlueprintAssignable, Category="Scale")
 		FWeightEvent MagicScale;
 
-	UFUNCTION(BlueprintCallable, Category = "ScaleFunction")
+	UFUNCTION(BlueprintCallable, Category="ScaleFunction")
 		void ActivateScale();
 
 	void GetWeight(int left, int right);

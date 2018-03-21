@@ -23,7 +23,6 @@ void UScaleWeightDisplayer::BeginPlay()
 void UScaleWeightDisplayer::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	//ActivateScale();
 }
 
 
