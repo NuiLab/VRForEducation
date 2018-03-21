@@ -70,9 +70,6 @@ private:
 	UPROPERTY(EditAnywhere)
 		FString BookIndex5 = "Book_26";
 
-	UPROPERTY(EditAnywhere)
-		class ULightComponent* ARR_TopLight = nullptr;
-
 	//UPROPERTY(EditAnywhere)
 		//bool CorrectBookSequence = false;
 
