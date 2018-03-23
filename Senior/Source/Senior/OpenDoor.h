@@ -38,40 +38,37 @@ private:
 		ATriggerVolume* ARRTriggerVolume0 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex0 = "Book_8";
+		FString BookIndex0 = "Book_1";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume1 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex1 = "Book_14";
+		FString BookIndex1 = "Book_2";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume2 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex2 = "Book_17";
+		FString BookIndex2 = "Book_3";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume3 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex3 = "Book_20";
+		FString BookIndex3 = "Book_4";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume4 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex4 = "Book_23";
+		FString BookIndex4 = "Book_5";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume5 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex5 = "Book_26";
-
-	//UPROPERTY(EditAnywhere)
-		//bool CorrectBookSequence = false;
+		FString BookIndex5 = "Book_6";
 
 	// The owning door
 	AActor* Owner = nullptr;

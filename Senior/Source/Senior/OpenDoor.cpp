@@ -60,12 +60,10 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	if (AllPlatesPressed())
 	{
 		OnOpen.Broadcast();
-		//UE_LOG(LogTemp, Error, TEXT("OPEN!"));
 	}
 	else
 	{
 		OnClose.Broadcast();
-		//UE_LOG(LogTemp, Error, TEXT("CLOSE"));
 	}
 	// ...
 }
