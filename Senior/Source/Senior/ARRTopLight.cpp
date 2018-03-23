@@ -65,11 +65,12 @@ bool UARRTopLight::CorrectOrder()
 	if (!ARRTriggerVolume1) { return false; }
 
 
-	UE_LOG(LogTemp, Error, TEXT("All Plates exist"));
+	//UE_LOG(LogTemp, Error, TEXT("All Plates exist"));
 
 	ARRTriggerVolume0->GetOverlappingActors(OUT BookArray);
 	if (BookArray.Num() == 1)
 	{
+		//UE_LOG(LogTemp, Error, TEXT("Book %s"), *BookArray[0]->GetName());
 		if (*BookArray[0]->GetName() == BookIndex0)
 		{
 			Book0 = true;

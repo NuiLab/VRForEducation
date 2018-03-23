@@ -38,13 +38,13 @@ private:
 		ATriggerVolume* ARRTriggerVolume0 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex0 = "Book_8";
+		FString BookIndex0 = "Book_1";
 
 	UPROPERTY(EditAnywhere)
 		ATriggerVolume* ARRTriggerVolume1 = nullptr;
 
 	UPROPERTY(EditAnywhere)
-		FString BookIndex1 = "Book_14";
+		FString BookIndex1 = "Book_2";
 
 	// The owning door
 	AActor* Owner = nullptr;
