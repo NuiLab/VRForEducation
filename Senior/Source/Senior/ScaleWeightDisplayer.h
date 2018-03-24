@@ -7,7 +7,7 @@
 #include "Components/ActorComponent.h"
 #include "ScaleWeightDisplayer.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FWeightEvent, FVector, LeftHeight, FVector, RightHeight);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FWeightEvent, FVector, LeftHeight, FVector, RightHeight, FRotator, TiltDegree);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SENIOR_API UScaleWeightDisplayer : public UActorComponent

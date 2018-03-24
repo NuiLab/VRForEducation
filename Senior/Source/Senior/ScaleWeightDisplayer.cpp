@@ -71,21 +71,24 @@ void UScaleWeightDisplayer::DisplayWeight(int left, int right)
 	{
 		FVector heightL = { 0.0f, 0.0f, -15.0f };
 		FVector heightR = { 0.0f, 0.0f, 15.0f };
-		MagicScale.Broadcast(heightL, heightR);
-		UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT, Left: %d, Right: %d"), left, right);
+		FRotator tiltDeg = { 15.0f, 0.0f, 0.0f };
+		MagicScale.Broadcast(heightL, heightR, tiltDeg);
+		//UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT, Left: %d, Right: %d"), left, right);
 	}
 	else if (left < right)
 	{
 		FVector heightL = { 0.0f, 0.0f, 15.0f };
 		FVector heightR = { 0.0f, 0.0f, -15.0f };
-		MagicScale.Broadcast(heightL, heightR);
-		UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT, Left: %d, Right: %d"), left, right);
+		FRotator tiltDeg = { -15.0f, 0.0f, 0.0f };
+		MagicScale.Broadcast(heightL, heightR, tiltDeg);
+		//UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT, Left: %d, Right: %d"), left, right);
 	}
 	else
 	{
 		FVector heightL = { 0.0f, 0.0f, 0.0f };
 		FVector heightR = { 0.0f, 0.0f, 0.0f };
-		MagicScale.Broadcast(heightL, heightR);
-		UE_LOG(LogTemp, Warning, TEXT("Balanced, Left: %d, Right: %d"), left, right);
+		FRotator tiltDeg = { 0.0f, 0.0f, 0.0f };
+		MagicScale.Broadcast(heightL, heightR, tiltDeg);
+		//UE_LOG(LogTemp, Warning, TEXT("Balanced, Left: %d, Right: %d"), left, right);
 	}
 }
