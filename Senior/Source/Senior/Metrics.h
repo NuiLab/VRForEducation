@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/Core/Public/Misc/DateTime.h"
 #include "Components/ActorComponent.h"
 #include "Engine/TriggerVolume.h"
 #include "Metrics.generated.h"
@@ -25,12 +26,29 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void StartGame();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void EndGame();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void EnteredRoom(FString room);
+
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void PuzzleSolved(FString room);
+
+	void GetTime(FDateTime &current);
+
+	void EndTime(FDateTime &start, FTimespan &puzzleTime);
+
 private:
+	// Metrics
+	FTimespan Puzzle1Time;
+	FTimespan Puzzle2Time;
+	FTimespan Puzzle3Time;
+	FDateTime Start;
+	FDateTime Date;
+	const int PlayerID = 10;
 
-	UPROPERTY(EditAnywhere)
-		ATriggerVolume* ARRMetrics = nullptr;
-
-	// The owning door
-	AActor* Owner = nullptr;
-	
 };
