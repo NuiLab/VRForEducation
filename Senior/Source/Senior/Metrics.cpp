@@ -32,17 +32,13 @@ void UMetrics::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 void UMetrics::GetTime(FDateTime &current)
 {
 	current = current.Now();
-	UE_LOG(LogTemp, Warning, TEXT("ULTRA TIME: %s\n"), *current.ToString());
 }
 
 
 void UMetrics::EndTime(FDateTime &start, FTimespan &puzzleTime)
 {
 	FDateTime end = end.Now();
-	UE_LOG(LogTemp, Warning, TEXT("START: %s\n"), *start.ToString());
-	UE_LOG(LogTemp, Warning, TEXT("END:   %s\n"), *end.ToString());
 	puzzleTime = end - start;
-	UE_LOG(LogTemp, Warning, TEXT("TIME: %f\n"), puzzleTime.GetTotalMinutes());
 }
 
 
@@ -93,14 +89,11 @@ void UMetrics::PuzzleSolved(FString room)
 	if (room == "ARR")
 	{
 		EndTime(Start, Puzzle2Time);
-		UE_LOG(LogTemp, Warning, TEXT("IF Time: %f\n"), Puzzle1Time.GetTotalMinutes());
 		// Update HUD Level
 	}
 	if (room == "FOR")
 	{
 		EndTime(Start, Puzzle3Time);
-		UE_LOG(LogTemp, Warning, TEXT("IF Time: %f\n"), Puzzle1Time.GetTotalMinutes());
-		UE_LOG(LogTemp, Warning, TEXT("ARR Time: %f\n"), Puzzle2Time.GetTotalMinutes());
 		// Update HUD Level
 	}
 }
