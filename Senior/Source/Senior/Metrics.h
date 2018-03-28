@@ -8,13 +8,33 @@
 #include "Engine/TriggerVolume.h"
 #include "Metrics.generated.h"
 
+USTRUCT()
+struct FRoom {
+	//GENERATED_USTRUCT_BODY()
+	GENERATED_USTRUCT_BODY()
+
+	FDateTime enterRoom;
+	FDateTime startPuzzle;
+	FDateTime solvePuzzle;
+	FDateTime exitRoom;
+	int32 TotalTries;
+};
+
+USTRUCT()
+struct FPlayerPath {
+	GENERATED_USTRUCT_BODY()
+	//GENERATED_BODY()
+
+	FVector PlayerLocation;
+	FRotator PlayerRotation;
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SENIOR_API UMetrics : public UActorComponent
 {
 	GENERATED_BODY()
 
-public:	
+public:
 	// Sets default values for this component's properties
 	UMetrics();
 
@@ -22,7 +42,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
@@ -41,6 +61,10 @@ public:
 	void GetTime(FDateTime &current);
 
 	void EndTime(FDateTime &start, FTimespan &puzzleTime);
+
+	void CreateJSON(int32 id, FDateTime GameDate, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FDateTime GameStarted, FDateTime GameEnded, TArray<FPlayerPath> pPath);
+
+	void FileWritter(FString JSONObject);
 
 private:
 	// Metrics

@@ -1,0 +1,32 @@
+{
+    "Players": 
+    [
+      {
+        "id" : "1000",
+        "date" : "03/27/18",
+        "roomOne": {"enterRoom": "00:00:00",
+                    "startPuzzle": "00:00:00",
+                    "endPuzzle" : "00:00:00",
+                    "endRoom" : "00:00:00",
+                    "PuzzleTries": "1"
+        },
+        "roomTwo": {"enterRoom": "00:00:00",
+                    "startPuzzle": "00:00:00",
+                    "endPuzzle" : "00:00:00",
+                    "endRoom" : "00:00:00",
+                    "PuzzleTries": "1"
+        },
+        "roomThree": {"enterRoom": "00:00:00",
+                    "startPuzzle": "00:00:00",
+                    "endPuzzle" : "00:00:00",
+                    "endRoom" : "00:00:00",
+                    "PuzzleTries": "1"
+        },
+        "gameTimes": {"startGame":"00:00:00", "endGame" :"00:00:00"},
+        "path" : [
+          {"location" :"0,0,0","rotation": "0,0,0"},
+          {"location" :"0,0,0","rotation": "0,0,0"}
+          ]
+      }
+    ]
+  }

@@ -97,3 +97,16 @@ void UMetrics::PuzzleSolved(FString room)
 		// Update HUD Level
 	}
 }
+
+void UMetrics::CreateJSON(int32 id, FDateTime GameDate, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FDateTime GameStarted, FDateTime GameEnded, TArray<FPlayerPath> pPath)
+{
+	//TODO create json object
+	//TODO Call Printer
+	return;
+}
+
+void FileWritter(FString JSONObject)
+{
+	//TODO Print to file
+	return;
+}
