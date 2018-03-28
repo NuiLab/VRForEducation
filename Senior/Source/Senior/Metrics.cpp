@@ -29,29 +29,41 @@ void UMetrics::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 }
 
 
-void UMetrics::GetTime(FDateTime &current)
+void UMetrics::GetDate(FDateTime &current)
 {
-	current = current.Now();
+	FDateTime date = date.Now();
+	current = date.GetDate();
 }
 
 
-void UMetrics::EndTime(FDateTime &start, FTimespan &puzzleTime)
+void UMetrics::GetTime(FTimespan &current)
 {
-	FDateTime end = end.Now();
-	puzzleTime = end - start;
+	FDateTime time = time.Now();
+	current = time.GetTimeOfDay();
 }
 
 
 void UMetrics::StartGame()
 {
-	GetTime(Date);
+	GetDate(Date);
+	GetTime(StartTime);
 }
 
 
 void UMetrics::EndGame()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Date                  Player ID   Puzzle 1   Puzzle 2   Puzzle 3\n"));
-	UE_LOG(LogTemp, Warning, TEXT("%-22s%-12d%-11.2f%-11.2f%-11.2f\n"), *Date.ToString(), PlayerID, Puzzle1Time.GetTotalMinutes(), Puzzle2Time.GetTotalMinutes(), Puzzle3Time.GetTotalMinutes());
+	GetTime(EndTime);
+	
+	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
+	UE_LOG(LogTemp, Warning, TEXT("Player ID: %d\n"), PlayerID);
+	UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("        Room 1        Room 2        Room 3\n"));
+	UE_LOG(LogTemp, Warning, TEXT("Enter:  %-14s%-14s%-14s\n"), *RoomOne.EnterRoom.ToString(), *RoomTwo.EnterRoom.ToString(), *RoomThree.EnterRoom.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Start:  %-14s%-14s%-14s\n"), *RoomOne.StartPuzzle.ToString(), *RoomTwo.StartPuzzle.ToString(), *RoomThree.StartPuzzle.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Solved: %-14s%-14s%-14s\n"), *RoomOne.SolvedPuzzle.ToString(), *RoomTwo.SolvedPuzzle.ToString(), *RoomThree.SolvedPuzzle.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Exit:   %-14s%-14s%-14s\n"), *RoomOne.ExitRoom.ToString(), *RoomTwo.ExitRoom.ToString(), *RoomThree.ExitRoom.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Tries:  %-14d%-14d%-14d\n"), RoomOne.TotalTries, RoomTwo.TotalTries, RoomThree.TotalTries);
+	UE_LOG(LogTemp, Warning, TEXT("Game Ended: %s\n"), *EndTime.ToString());
 }
 
 
@@ -59,22 +71,45 @@ void UMetrics::EnteredRoom(FString room)
 {
 	if (room == "IF")
 	{
+		GetTime(RoomOne.EnterRoom);
 		// Display IF puzzle info
-		GetTime(Start);
+		//PuzzleStarted("IF");
 	}
 	if (room == "ARR")
 	{
+		GetTime(RoomOne.ExitRoom);
+		GetTime(RoomTwo.EnterRoom);
 		// Display ARR puzzle info
-		GetTime(Start);
+		//PuzzleStarted("ARR");
 	}
 	if (room == "FOR")
 	{
+		GetTime(RoomTwo.ExitRoom);
+		GetTime(RoomThree.EnterRoom);
 		// Display FOR puzzle info
-		GetTime(Start);
+		//PuzzleStarted("FOR");
 	}
 	if (room == "Prize")
 	{
+		GetTime(RoomThree.ExitRoom);
 		// Display Prize info
+	}
+}
+
+
+void UMetrics::PuzzleStarted(FString room)
+{
+	if (room == "IF")
+	{
+		GetTime(RoomOne.StartPuzzle);
+	}
+	if (room == "ARR")
+	{
+		GetTime(RoomTwo.StartPuzzle);
+	}
+	if (room == "FOR")
+	{
+		GetTime(RoomThree.StartPuzzle);
 	}
 }
 
@@ -83,29 +118,40 @@ void UMetrics::PuzzleSolved(FString room)
 {
 	if (room == "IF")
 	{
-		EndTime(Start, Puzzle1Time);
+		GetTime(RoomOne.SolvedPuzzle);
+		RoomOne.TotalTries = ScaleUsed;
 		// Update HUD Level
 	}
 	if (room == "ARR")
 	{
-		EndTime(Start, Puzzle2Time);
+		GetTime(RoomTwo.SolvedPuzzle);
+		//RoomTwo.TotalTries = ???
 		// Update HUD Level
 	}
 	if (room == "FOR")
 	{
-		EndTime(Start, Puzzle3Time);
+		GetTime(RoomThree.SolvedPuzzle);
+		RoomThree.TotalTries = CauldronHeated;
 		// Update HUD Level
 	}
 }
 
-void UMetrics::CreateJSON(int32 id, FDateTime GameDate, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FDateTime GameStarted, FDateTime GameEnded, TArray<FPlayerPath> pPath)
+
+void UMetrics::GetIncrement(UPARAM(ref) int32 &var)
+{
+	var++;
+}
+
+
+void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path)
 {
 	//TODO create json object
 	//TODO Call Printer
 	return;
 }
 
-void FileWritter(FString JSONObject)
+
+void UMetrics::FileWriter(FString JSONObject)
 {
 	//TODO Print to file
 	return;

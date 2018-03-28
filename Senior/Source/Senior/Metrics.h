@@ -8,26 +8,27 @@
 #include "Engine/TriggerVolume.h"
 #include "Metrics.generated.h"
 
+
 USTRUCT()
 struct FRoom {
-	//GENERATED_USTRUCT_BODY()
 	GENERATED_USTRUCT_BODY()
 
-	FDateTime enterRoom;
-	FDateTime startPuzzle;
-	FDateTime solvePuzzle;
-	FDateTime exitRoom;
+	FTimespan EnterRoom;
+	FTimespan StartPuzzle;
+	FTimespan SolvedPuzzle;
+	FTimespan ExitRoom;
 	int32 TotalTries;
 };
+
 
 USTRUCT()
 struct FPlayerPath {
 	GENERATED_USTRUCT_BODY()
-	//GENERATED_BODY()
-
+	
 	FVector PlayerLocation;
 	FRotator PlayerRotation;
 };
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class SENIOR_API UMetrics : public UActorComponent
@@ -56,23 +57,39 @@ public:
 		void EnteredRoom(FString room);
 
 	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void PuzzleStarted(FString room);
+
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
 		void PuzzleSolved(FString room);
 
-	void GetTime(FDateTime &current);
+	UFUNCTION(BlueprintCallable, Category = "Game Event")
+		void GetIncrement(UPARAM(ref) int32 &var);
 
-	void EndTime(FDateTime &start, FTimespan &puzzleTime);
+	void GetDate(FDateTime &current);
 
-	void CreateJSON(int32 id, FDateTime GameDate, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FDateTime GameStarted, FDateTime GameEnded, TArray<FPlayerPath> pPath);
+	void GetTime(FTimespan &current);
 
-	void FileWritter(FString JSONObject);
+	void CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path);
+
+	void FileWriter(FString JSONObject);
+
+	// Metrics
+	/** Number of times the Scale was used. */
+	UPROPERTY(BlueprintReadWrite, Category = "Metric")
+		int32 ScaleUsed = 0;
+
+	/** Number of times the Cauldron was heated. */
+	UPROPERTY(BlueprintReadWrite, Category = "Metric")
+		int32 CauldronHeated = 0;
 
 private:
 	// Metrics
-	FTimespan Puzzle1Time;
-	FTimespan Puzzle2Time;
-	FTimespan Puzzle3Time;
-	FDateTime Start;
+	const int32 PlayerID = 10;
 	FDateTime Date;
-	const int PlayerID = 10;
+	FTimespan StartTime;
+	FTimespan EndTime;
+	FRoom RoomOne;
+	FRoom RoomTwo;
+	FRoom RoomThree;
 
 };
