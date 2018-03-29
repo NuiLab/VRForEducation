@@ -3,6 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
+#include "Runtime/Core/Public/HAL/PlatformFilemanager.h"
+#include "Runtime/Core/Public/Misc/FileHelper.h"
+#include "Runtime/Engine/Classes/Engine/World.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 #include "Runtime/Core/Public/Misc/DateTime.h"
 #include "Components/ActorComponent.h"
 #include "Engine/TriggerVolume.h"
@@ -65,13 +70,18 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Event")
 		void GetIncrement(UPARAM(ref) int32 &var);
 
+	UFUNCTION()
+		void EverySecond();
+
+	void GetPlayerPath();
+
 	void GetDate(FDateTime &current);
 
 	void GetTime(FTimespan &current);
 
 	void CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path);
 
-	void FileWriter(FString JSONObject);
+	void FileWriter(FString JSONObject, bool isJSON);
 
 	// Metrics
 	/** Number of times the Scale was used. */
@@ -91,5 +101,9 @@ private:
 	FRoom RoomOne;
 	FRoom RoomTwo;
 	FRoom RoomThree;
+	FPlayerPath PlayerPath;
+	TArray<FPlayerPath> PathArray;
 
+	// The Player
+	AActor* Player = nullptr;
 };

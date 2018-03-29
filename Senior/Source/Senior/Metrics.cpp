@@ -16,9 +16,13 @@ UMetrics::UMetrics()
 void UMetrics::BeginPlay()
 {
 	Super::BeginPlay();
-
+	Player = GetOwner();
 	// ..
 	StartGame();
+	//UE_LOG(LogTemp, Warning, TEXT("Start: %s\n"), *StartTime.ToString());
+	FTimerHandle handle;
+	GetWorld()->GetTimerManager().SetTimer(handle, this, &UMetrics::EverySecond, 1.0f, true);
+	
 }
 
 
@@ -53,6 +57,49 @@ void UMetrics::StartGame()
 void UMetrics::EndGame()
 {
 	GetTime(EndTime);
+	FString MetricsString;
+
+	MetricsString.AppendInt(PlayerID);
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*Date.ToString().LeftChop(9));
+	MetricsString.AppendChar(',');
+	//Room One Metrics
+	MetricsString.Append(*RoomOne.EnterRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomOne.StartPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomOne.SolvedPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomOne.ExitRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.AppendInt(RoomOne.TotalTries);
+	//Room Two Metrics
+	MetricsString.Append(*RoomTwo.EnterRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomTwo.StartPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomTwo.SolvedPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomTwo.ExitRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.AppendInt(RoomTwo.TotalTries);
+	//Room Three Metrics
+	MetricsString.Append(*RoomThree.EnterRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomThree.StartPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomThree.SolvedPuzzle.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*RoomThree.ExitRoom.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.AppendInt(RoomThree.TotalTries);
+	//Start and EndTime
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*StartTime.ToString());
+	MetricsString.AppendChar(',');
+	MetricsString.Append(*EndTime.ToString());
+
+	FileWriter(MetricsString, false);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
 	UE_LOG(LogTemp, Warning, TEXT("Player ID: %d\n"), PlayerID);
@@ -143,6 +190,25 @@ void UMetrics::GetIncrement(UPARAM(ref) int32 &var)
 }
 
 
+void UMetrics::EverySecond()
+{
+	//FTimespan temp;
+	//GetTime(temp);
+	//UE_LOG(LogTemp, Warning, TEXT("SECONDS: %s\n"), *temp.ToString());
+	GetPlayerPath();
+}
+
+
+void UMetrics::GetPlayerPath()
+{
+	PlayerPath.PlayerLocation = Player->GetActorLocation();
+	PlayerPath.PlayerRotation = Player->GetActorRotation();
+	//UE_LOG(LogTemp, Warning, TEXT("Location: %s\n"), *PlayerPath.PlayerLocation.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Rotation: %s\n"), *PlayerPath.PlayerRotation.ToString());
+	PathArray.Add(PlayerPath);
+}
+
+
 void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path)
 {
 	//TODO create json object
@@ -151,8 +217,45 @@ void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo
 }
 
 
-void UMetrics::FileWriter(FString JSONObject)
+void UMetrics::FileWriter(FString JSONObject, bool isJSON)
 {
-	//TODO Print to file
+	//FString SaveDirectory = FString("X:/WorkSpace/Unreal/Projects/VREducation/Senior/Content/TempFiles");
+	FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
+	FString FileName;
+	FString TextToSave;
+	TextToSave += *JSONObject;
+	TextToSave.AppendChar('\r');
+	TextToSave.AppendChar('\n');
+
+	if (isJSON)
+	{
+		FileName = FString("Metrics.json");
+	}
+	else
+	{
+		FileName = FString("Metrics.txt");
+	}
+	bool AllowOverwriting = true;
+
+	IPlatformFile& PlatformFile = FPlatformFileManager::Get().GetPlatformFile();
+
+	//// CreateDirectoryTree returns true if the destination
+	//// directory existed prior to call or has been created
+	//// during the call.
+	if (PlatformFile.CreateDirectoryTree(*SaveDirectory))
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Ready to Print to file: %s"), *JSONObject);
+		//UE_LOG(LogTemp, Warning, TEXT(">>> %s"), *TextToSave);
+		// Get absolute file path
+		FString AbsoluteFilePath = SaveDirectory + "/" + FileName;
+
+		UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *AbsoluteFilePath);
+		// Allow overwriting or file doesn't already exist
+		if (AllowOverwriting || !PlatformFile.FileExists(*AbsoluteFilePath))
+		{
+			//FFileHelper::SaveStringToFile(TextToSave, *AbsoluteFilePath);
+			FFileHelper::SaveStringToFile(TextToSave, *AbsoluteFilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), EFileWrite::FILEWRITE_Append);
+		}
+	}
 	return;
 }
