@@ -71,9 +71,7 @@ public:
 		void GetIncrement(UPARAM(ref) int32 &var);
 
 	UFUNCTION()
-		void EverySecond();
-
-	void GetPlayerPath();
+		void GetPlayerPath();
 
 	void GetDate(FDateTime &current);
 

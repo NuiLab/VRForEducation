@@ -19,10 +19,9 @@ void UMetrics::BeginPlay()
 	Player = GetOwner();
 	// ..
 	StartGame();
-	//UE_LOG(LogTemp, Warning, TEXT("Start: %s\n"), *StartTime.ToString());
 	FTimerHandle handle;
-	GetWorld()->GetTimerManager().SetTimer(handle, this, &UMetrics::EverySecond, 1.0f, true);
-	
+	GetWorld()->GetTimerManager().SetTimer(handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
+	//EndGame();
 }
 
 
@@ -73,6 +72,7 @@ void UMetrics::EndGame()
 	MetricsString.Append(*RoomOne.ExitRoom.ToString());
 	MetricsString.AppendChar(',');
 	MetricsString.AppendInt(RoomOne.TotalTries);
+	MetricsString.AppendChar(',');
 	//Room Two Metrics
 	MetricsString.Append(*RoomTwo.EnterRoom.ToString());
 	MetricsString.AppendChar(',');
@@ -83,6 +83,7 @@ void UMetrics::EndGame()
 	MetricsString.Append(*RoomTwo.ExitRoom.ToString());
 	MetricsString.AppendChar(',');
 	MetricsString.AppendInt(RoomTwo.TotalTries);
+	MetricsString.AppendChar(',');
 	//Room Three Metrics
 	MetricsString.Append(*RoomThree.EnterRoom.ToString());
 	MetricsString.AppendChar(',');
@@ -190,22 +191,14 @@ void UMetrics::GetIncrement(UPARAM(ref) int32 &var)
 }
 
 
-void UMetrics::EverySecond()
-{
-	//FTimespan temp;
-	//GetTime(temp);
-	//UE_LOG(LogTemp, Warning, TEXT("SECONDS: %s\n"), *temp.ToString());
-	GetPlayerPath();
-}
-
-
 void UMetrics::GetPlayerPath()
 {
 	PlayerPath.PlayerLocation = Player->GetActorLocation();
 	PlayerPath.PlayerRotation = Player->GetActorRotation();
+	PathArray.Add(PlayerPath);
+
 	//UE_LOG(LogTemp, Warning, TEXT("Location: %s\n"), *PlayerPath.PlayerLocation.ToString());
 	//UE_LOG(LogTemp, Warning, TEXT("Rotation: %s\n"), *PlayerPath.PlayerRotation.ToString());
-	PathArray.Add(PlayerPath);
 }
 
 
