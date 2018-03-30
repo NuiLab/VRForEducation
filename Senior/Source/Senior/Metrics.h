@@ -32,6 +32,12 @@ struct FPlayerPath {
 	
 	FVector PlayerLocation;
 	FRotator PlayerRotation;
+	
+	FString ToString()
+	{
+		FString string = "{" + PlayerLocation.ToString() + "," + PlayerRotation.ToString() + "}";
+		return  string;
+	}
 };
 
 
@@ -79,7 +85,7 @@ public:
 
 	void CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path);
 
-	void FileWriter(FString JSONObject, bool isJSON);
+	void FileWriter(FString JSONObject, FString file, bool isJSON);
 
 	// Metrics
 	/** Number of times the Scale was used. */

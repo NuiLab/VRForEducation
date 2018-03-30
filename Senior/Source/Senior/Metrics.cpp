@@ -57,50 +57,46 @@ void UMetrics::EndGame()
 {
 	GetTime(EndTime);
 	FString MetricsString;
+	FString PathString;
+	int32 index;
+	int32 length = PathArray.Num();
 
+	// Metrics
 	MetricsString.AppendInt(PlayerID);
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*Date.ToString().LeftChop(9));
-	MetricsString.AppendChar(',');
-	//Room One Metrics
-	MetricsString.Append(*RoomOne.EnterRoom.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomOne.StartPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomOne.SolvedPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomOne.ExitRoom.ToString());
-	MetricsString.AppendChar(',');
+	MetricsString.Append("," + Date.ToString().LeftChop(9));
+	// Room One Metrics
+	MetricsString.Append("," + RoomOne.EnterRoom.ToString() + ",");
+	MetricsString.Append(RoomOne.StartPuzzle.ToString() + ",");
+	MetricsString.Append(RoomOne.SolvedPuzzle.ToString() + ",");
+	MetricsString.Append(RoomOne.ExitRoom.ToString() + ",");
 	MetricsString.AppendInt(RoomOne.TotalTries);
-	MetricsString.AppendChar(',');
-	//Room Two Metrics
-	MetricsString.Append(*RoomTwo.EnterRoom.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomTwo.StartPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomTwo.SolvedPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomTwo.ExitRoom.ToString());
-	MetricsString.AppendChar(',');
+	// Room Two Metrics
+	MetricsString.Append("," + RoomTwo.EnterRoom.ToString() + ",");
+	MetricsString.Append(RoomTwo.StartPuzzle.ToString() + ",");
+	MetricsString.Append(RoomTwo.SolvedPuzzle.ToString() + ",");
+	MetricsString.Append(RoomTwo.ExitRoom.ToString() + ",");
 	MetricsString.AppendInt(RoomTwo.TotalTries);
-	MetricsString.AppendChar(',');
-	//Room Three Metrics
-	MetricsString.Append(*RoomThree.EnterRoom.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomThree.StartPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomThree.SolvedPuzzle.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*RoomThree.ExitRoom.ToString());
-	MetricsString.AppendChar(',');
+	// Room Three Metrics
+	MetricsString.Append("," + RoomThree.EnterRoom.ToString() + ",");
+	MetricsString.Append(RoomThree.StartPuzzle.ToString() + ",");
+	MetricsString.Append(RoomThree.SolvedPuzzle.ToString() + ",");
+	MetricsString.Append(RoomThree.ExitRoom.ToString() + ",");
 	MetricsString.AppendInt(RoomThree.TotalTries);
-	//Start and EndTime
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*StartTime.ToString());
-	MetricsString.AppendChar(',');
-	MetricsString.Append(*EndTime.ToString());
+	// Start and EndTime
+	MetricsString.Append("," + StartTime.ToString() + ",");
+	MetricsString.Append(EndTime.ToString());
 
-	FileWriter(MetricsString, false);
+	FileWriter(MetricsString, "Metrics", false);
+
+	// Path
+	PathString.Append("[");
+	for (index = 0; index < length-1; index++)
+	{
+		PathString.Append(PathArray[index].ToString() + ",");
+	}
+	PathString.Append(PathArray[index].ToString() + "]");
+
+	FileWriter(PathString, "Path", false);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
 	UE_LOG(LogTemp, Warning, TEXT("Player ID: %d\n"), PlayerID);
@@ -196,9 +192,11 @@ void UMetrics::GetPlayerPath()
 	PlayerPath.PlayerLocation = Player->GetActorLocation();
 	PlayerPath.PlayerRotation = Player->GetActorRotation();
 	PathArray.Add(PlayerPath);
-
-	//UE_LOG(LogTemp, Warning, TEXT("Location: %s\n"), *PlayerPath.PlayerLocation.ToString());
-	//UE_LOG(LogTemp, Warning, TEXT("Rotation: %s\n"), *PlayerPath.PlayerRotation.ToString());
+	/*
+	FString temp;
+	temp.Append(PlayerPath.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("PlayerPath: %s\n"), *temp);
+	*/
 }
 
 
@@ -210,23 +208,22 @@ void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo
 }
 
 
-void UMetrics::FileWriter(FString JSONObject, bool isJSON)
+void UMetrics::FileWriter(FString JSONObject, FString file, bool isJSON)
 {
 	//FString SaveDirectory = FString("X:/WorkSpace/Unreal/Projects/VREducation/Senior/Content/TempFiles");
 	FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
 	FString FileName;
 	FString TextToSave;
 	TextToSave += *JSONObject;
-	TextToSave.AppendChar('\r');
-	TextToSave.AppendChar('\n');
+	TextToSave.Append("\r\n");
 
 	if (isJSON)
 	{
-		FileName = FString("Metrics.json");
+		FileName = FString(file + ".json");
 	}
 	else
 	{
-		FileName = FString("Metrics.txt");
+		FileName = FString(file + ".txt");
 	}
 	bool AllowOverwriting = true;
 
