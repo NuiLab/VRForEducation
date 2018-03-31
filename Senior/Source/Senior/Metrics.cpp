@@ -210,8 +210,11 @@ void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo
 
 void UMetrics::FileWriter(FString JSONObject, FString file, bool isJSON)
 {
+	FString FilePath = FPaths::GameContentDir();
+	//UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *FilePath);
 	//FString SaveDirectory = FString("X:/WorkSpace/Unreal/Projects/VREducation/Senior/Content/TempFiles");
-	FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
+	//FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
+	FString SaveDirectory = FilePath + "TempFiles";
 	FString FileName;
 	FString TextToSave;
 	TextToSave += *JSONObject;

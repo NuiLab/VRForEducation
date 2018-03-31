@@ -9,6 +9,7 @@
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "Runtime/Engine/Public/TimerManager.h"
 #include "Runtime/Core/Public/Misc/DateTime.h"
+#include "Runtime/Core/Public/Misc/Paths.h"
 #include "Components/ActorComponent.h"
 #include "Engine/TriggerVolume.h"
 #include "Metrics.generated.h"
@@ -35,8 +36,17 @@ struct FPlayerPath {
 	
 	FString ToString()
 	{
-		FString string = "{" + PlayerLocation.ToString() + "," + PlayerRotation.ToString() + "}";
-		return  string;
+		float x = PlayerLocation.X;
+		float y = PlayerLocation.Y;
+		float z = PlayerLocation.Z;
+		float pitch = PlayerRotation.Pitch;
+		float yaw = PlayerRotation.Yaw;
+		float roll = PlayerRotation.Roll;
+				
+		FString ToStringReturn;
+		ToStringReturn = "{\"location\" : \"" + FString::SanitizeFloat(x) + ',' + FString::SanitizeFloat(y) + ',' + FString::SanitizeFloat(z) + "\", rotation\" : \"" + FString::SanitizeFloat(pitch) + "," + FString::SanitizeFloat(yaw) + "," + FString::SanitizeFloat(roll) + "\"}";
+
+		return  ToStringReturn;
 	}
 };
 
