@@ -115,6 +115,7 @@ private:
 	FRoom RoomOne;
 	FRoom RoomTwo;
 	FRoom RoomThree;
+	FTimerHandle Handle;
 	FPlayerPath PlayerPath;
 	TArray<FPlayerPath> PathArray;
 

@@ -16,12 +16,9 @@ UMetrics::UMetrics()
 void UMetrics::BeginPlay()
 {
 	Super::BeginPlay();
+
 	Player = GetOwner();
-	// ..
-	//StartGame();
-	FTimerHandle handle;
-	GetWorld()->GetTimerManager().SetTimer(handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
-	//EndGame();
+	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
 }
 
 
@@ -50,6 +47,9 @@ void UMetrics::StartGame()
 {
 	GetDate(Date);
 	GetTime(StartTime);
+	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
+	//GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
+	UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
 }
 
 
@@ -196,11 +196,11 @@ void UMetrics::GetPlayerPath()
 	PlayerPath.PlayerLocation = Player->GetActorLocation();
 	PlayerPath.PlayerRotation = Player->GetActorRotation();
 	PathArray.Add(PlayerPath);
-	/*
+	
 	FString temp;
 	temp.Append(PlayerPath.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("PlayerPath: %s\n"), *temp);
-	*/
+	
 }
 
 
@@ -214,11 +214,13 @@ void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo
 
 void UMetrics::FileWriter(FString JSONObject, FString file, bool isJSON)
 {
-	FString FilePath = FPaths::GameContentDir();
+	FString FilePath;
+	FilePath = FPaths::GameContentDir();
 	//UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *FilePath);
 	//FString SaveDirectory = FString("X:/WorkSpace/Unreal/Projects/VREducation/Senior/Content/TempFiles");
 	//FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
-	FString SaveDirectory = FilePath + "TempFiles";
+	FString SaveDirectory;
+	SaveDirectory = FilePath + "TempFiles";
 	FString FileName;
 	FString TextToSave;
 	TextToSave += *JSONObject;
