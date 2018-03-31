@@ -18,7 +18,7 @@ void UMetrics::BeginPlay()
 	Super::BeginPlay();
 	Player = GetOwner();
 	// ..
-	StartGame();
+	//StartGame();
 	FTimerHandle handle;
 	GetWorld()->GetTimerManager().SetTimer(handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
 	//EndGame();
@@ -57,6 +57,7 @@ void UMetrics::EndGame()
 {
 	GetTime(EndTime);
 	FString MetricsString;
+	FString JSONString;
 	FString PathString;
 	int32 index;
 	int32 length = PathArray.Num();
@@ -96,7 +97,10 @@ void UMetrics::EndGame()
 	}
 	PathString.Append(PathArray[index].ToString() + "]");
 
-	FileWriter(PathString, "Path", false);
+	JSONString = "{\r\n\t\"id\" : \"" + FString::FromInt(PlayerID) + "\", \r\n\t\"date\" : \"" + Date.ToString().LeftChop(9) + "\",\r\n\t\"roomOne\" : {\"enterRoom\": \"" + RoomOne.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomOne.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomOne.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomOne.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomOne.TotalTries) + "\" },\r\n\t\"roomTwo\" : {\"enterRoom\": \"" + RoomTwo.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomTwo.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomTwo.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomTwo.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomTwo.TotalTries) + "\"},\r\n\t\"roomThree\" : {\"enterRoom\": \"" + RoomThree.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomThree.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomThree.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomThree.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomThree.TotalTries) + "\"},\r\n\t\"gameTimes\" : {\"startGame\":\"" + StartTime.ToString() + "\", \"endGame\" : \"" + EndTime.ToString() + "\"},\r\n\t\"path\" : " + PathString + "\r\n},";
+
+	//FileWriter(PathString, "Path", false);
+	FileWriter(JSONString, "Metrics", true);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
 	UE_LOG(LogTemp, Warning, TEXT("Player ID: %d\n"), PlayerID);
@@ -242,7 +246,7 @@ void UMetrics::FileWriter(FString JSONObject, FString file, bool isJSON)
 		// Get absolute file path
 		FString AbsoluteFilePath = SaveDirectory + "/" + FileName;
 
-		UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *AbsoluteFilePath);
+		//UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *AbsoluteFilePath);
 		// Allow overwriting or file doesn't already exist
 		if (AllowOverwriting || !PlatformFile.FileExists(*AbsoluteFilePath))
 		{

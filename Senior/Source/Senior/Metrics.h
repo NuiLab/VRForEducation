@@ -44,7 +44,7 @@ struct FPlayerPath {
 		float roll = PlayerRotation.Roll;
 				
 		FString ToStringReturn;
-		ToStringReturn = "{\"location\" : \"" + FString::SanitizeFloat(x) + ',' + FString::SanitizeFloat(y) + ',' + FString::SanitizeFloat(z) + "\", rotation\" : \"" + FString::SanitizeFloat(pitch) + "," + FString::SanitizeFloat(yaw) + "," + FString::SanitizeFloat(roll) + "\"}";
+		ToStringReturn = "{\"location\" : \"" + FString::SanitizeFloat(x) + ',' + FString::SanitizeFloat(y) + ',' + FString::SanitizeFloat(z) + "\", \"rotation\" : \"" + FString::SanitizeFloat(pitch) + "," + FString::SanitizeFloat(yaw) + "," + FString::SanitizeFloat(roll) + "\"}";
 
 		return  ToStringReturn;
 	}
