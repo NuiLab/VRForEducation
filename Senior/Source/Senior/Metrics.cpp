@@ -47,9 +47,9 @@ void UMetrics::StartGame()
 {
 	GetDate(Date);
 	GetTime(StartTime);
-	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
+	//UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
 	//GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
-	UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
+	//UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
 }
 
 
@@ -62,9 +62,13 @@ void UMetrics::EndGame()
 	int32 index;
 	int32 length = PathArray.Num();
 
+	//UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
+	//UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
+
 	// Metrics
 	MetricsString.AppendInt(PlayerID);
 	MetricsString.Append("," + Date.ToString().LeftChop(9));
+	//MetricsString.Append("," + Date.ToString().LeftChop(9));
 	// Room One Metrics
 	MetricsString.Append("," + RoomOne.EnterRoom.ToString() + ",");
 	MetricsString.Append(RoomOne.StartPuzzle.ToString() + ",");
@@ -150,14 +154,17 @@ void UMetrics::PuzzleStarted(FString room)
 	if (room == "IF")
 	{
 		GetTime(RoomOne.StartPuzzle);
+		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomOne.StartPuzzle.ToString());
 	}
 	if (room == "ARR")
 	{
 		GetTime(RoomTwo.StartPuzzle);
+		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomTwo.StartPuzzle.ToString());
 	}
 	if (room == "FOR")
 	{
 		GetTime(RoomThree.StartPuzzle);
+		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomThree.StartPuzzle.ToString());
 	}
 }
 
