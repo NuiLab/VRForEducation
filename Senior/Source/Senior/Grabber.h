@@ -29,7 +29,7 @@ public:
 private:
 
 	//How far ahead of the player can we reach in centimeters
-	float Reach = 125.f;
+	float Reach = 175.f;
 
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;
 
@@ -54,5 +54,5 @@ private:
 	FVector GetReachLineStart();
 
 	// Returns current end of reach line
-	FVector GetReachLineEnd();
+	FVector GetReachLineEnd(bool Test);
 };

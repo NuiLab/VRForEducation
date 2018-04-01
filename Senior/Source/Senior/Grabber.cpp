@@ -61,7 +61,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		//move the object we are holding
-		PhysicsHandle->SetTargetLocation(GetReachLineEnd());
+		PhysicsHandle->SetTargetLocation(GetReachLineEnd(true));
 	}
 
 }
@@ -100,7 +100,7 @@ const FHitResult UGrabber::GetFirstPhysicsBodyInReach()
 	GetWorld()->LineTraceSingleByObjectType(
 		OUT HitResult,
 		GetReachLineStart(),
-		GetReachLineEnd(),
+		GetReachLineEnd(false),
 		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
 		TraceParameters
 	);
@@ -120,14 +120,24 @@ FVector UGrabber::GetReachLineStart()
 	return PlayerViewPointLocation;
 }
 
-FVector UGrabber::GetReachLineEnd()
+FVector UGrabber::GetReachLineEnd(bool Test)
 {
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
+	float NewReach;
+	if (Test)
+	{
+		NewReach = float(Reach / 1.8);
+	}
+	else
+	{
+		NewReach = Reach;
+	}
+
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
 		OUT PlayerViewPointLocation,
 		OUT PlayerViewPointRotation
 	);
 
-	return (PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach);
+	return (PlayerViewPointLocation + PlayerViewPointRotation.Vector() * NewReach);
 }
