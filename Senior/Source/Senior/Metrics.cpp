@@ -20,6 +20,7 @@ void UMetrics::BeginPlay()
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	StartGame();
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
+	//PlayerID = Date.ToUnixTimestamp();
 }
 
 
@@ -183,13 +184,16 @@ void UMetrics::GetIncrement(UPARAM(ref) int32 &var)
 
 void UMetrics::GetPlayerPath()
 {
+	GetTime(Current);
+	PlayerPath.Time = Current;
 	PlayerPath.PlayerLocation = Player->GetActorLocation();
 	PlayerPath.PlayerRotation = Player->GetActorRotation();
 	PathArray.Add(PlayerPath);
-	
+	/*
 	FString temp;
 	temp.Append(PlayerPath.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("PlayerPath: %s\n"), *temp);
+	*/
 }
 
 

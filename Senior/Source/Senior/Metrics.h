@@ -32,6 +32,7 @@ USTRUCT()
 struct FPlayerPath {
 	GENERATED_USTRUCT_BODY()
 	
+	FTimespan Time;
 	FVector PlayerLocation;
 	FRotator PlayerRotation;
 	
@@ -45,7 +46,7 @@ struct FPlayerPath {
 		FString roll = FString::SanitizeFloat(PlayerRotation.Roll);
 				
 		FString ToStringReturn;
-		ToStringReturn = "{\"location\" : \"" + x + ',' + y + ',' + z + "\", \"rotation\" : \"" + pitch + "," + yaw + "," + roll + "\"}";
+		ToStringReturn = "{\"time\" : \"" + Time.ToString() + "\", \"location\" : \"" + x + ',' + y + ',' + z + "\", \"rotation\" : \"" + pitch + "," + yaw + "," + roll + "\"}";
 
 		return  ToStringReturn;
 	}
@@ -107,10 +108,11 @@ public:
 
 private:
 	// Metrics
-	const int32 PlayerID = 10;
+	int64 PlayerID = 1;
 	FDateTime Date;
 	FTimespan StartTime;
 	FTimespan EndTime;
+	FTimespan Current;
 	FRoom RoomOne;
 	FRoom RoomTwo;
 	FRoom RoomThree;
