@@ -17,7 +17,8 @@ void UMetrics::BeginPlay()
 {
 	Super::BeginPlay();
 
-	Player = GetOwner();
+	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+	StartGame();
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
 }
 
@@ -47,9 +48,6 @@ void UMetrics::StartGame()
 {
 	GetDate(Date);
 	GetTime(StartTime);
-	//UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
-	//GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
-	//UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
 }
 
 
@@ -62,13 +60,9 @@ void UMetrics::EndGame()
 	int32 index;
 	int32 length = PathArray.Num();
 
-	//UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
-	//UE_LOG(LogTemp, Warning, TEXT("Game Started: %s\n"), *StartTime.ToString());
-
 	// Metrics
 	MetricsString.AppendInt(PlayerID);
 	MetricsString.Append("," + Date.ToString().LeftChop(9));
-	//MetricsString.Append("," + Date.ToString().LeftChop(9));
 	// Room One Metrics
 	MetricsString.Append("," + RoomOne.EnterRoom.ToString() + ",");
 	MetricsString.Append(RoomOne.StartPuzzle.ToString() + ",");
@@ -102,8 +96,7 @@ void UMetrics::EndGame()
 	PathString.Append(PathArray[index].ToString() + "]");
 
 	JSONString = "{\r\n\t\"id\" : \"" + FString::FromInt(PlayerID) + "\", \r\n\t\"date\" : \"" + Date.ToString().LeftChop(9) + "\",\r\n\t\"roomOne\" : {\"enterRoom\": \"" + RoomOne.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomOne.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomOne.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomOne.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomOne.TotalTries) + "\" },\r\n\t\"roomTwo\" : {\"enterRoom\": \"" + RoomTwo.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomTwo.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomTwo.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomTwo.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomTwo.TotalTries) + "\"},\r\n\t\"roomThree\" : {\"enterRoom\": \"" + RoomThree.EnterRoom.ToString() + "\", \"startPuzzle\" : \"" + RoomThree.StartPuzzle.ToString() + "\", \"endPuzzle\" : \"" + RoomThree.SolvedPuzzle.ToString() + "\", \"endRoom\" : \"" + RoomThree.ExitRoom.ToString() + "\", \"PuzzleTries\" : \"" + FString::FromInt(RoomThree.TotalTries) + "\"},\r\n\t\"gameTimes\" : {\"startGame\":\"" + StartTime.ToString() + "\", \"endGame\" : \"" + EndTime.ToString() + "\"},\r\n\t\"path\" : " + PathString + "\r\n},";
-
-	//FileWriter(PathString, "Path", false);
+	
 	FileWriter(JSONString, "Metrics", true);
 	
 	UE_LOG(LogTemp, Warning, TEXT("Date: %s\n"), *Date.ToString().LeftChop(9));
@@ -124,27 +117,20 @@ void UMetrics::EnteredRoom(FString room)
 	if (room == "IF")
 	{
 		GetTime(RoomOne.EnterRoom);
-		// Display IF puzzle info
-		//PuzzleStarted("IF");
 	}
 	if (room == "ARR")
 	{
 		GetTime(RoomOne.ExitRoom);
 		GetTime(RoomTwo.EnterRoom);
-		// Display ARR puzzle info
-		//PuzzleStarted("ARR");
 	}
 	if (room == "FOR")
 	{
 		GetTime(RoomTwo.ExitRoom);
 		GetTime(RoomThree.EnterRoom);
-		// Display FOR puzzle info
-		//PuzzleStarted("FOR");
 	}
 	if (room == "Prize")
 	{
 		GetTime(RoomThree.ExitRoom);
-		// Display Prize info
 	}
 }
 
@@ -154,17 +140,14 @@ void UMetrics::PuzzleStarted(FString room)
 	if (room == "IF")
 	{
 		GetTime(RoomOne.StartPuzzle);
-		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomOne.StartPuzzle.ToString());
 	}
 	if (room == "ARR")
 	{
 		GetTime(RoomTwo.StartPuzzle);
-		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomTwo.StartPuzzle.ToString());
 	}
 	if (room == "FOR")
 	{
 		GetTime(RoomThree.StartPuzzle);
-		UE_LOG(LogTemp, Warning, TEXT("PUZZLE Started: %s\n"), *RoomThree.StartPuzzle.ToString());
 	}
 }
 
@@ -207,29 +190,18 @@ void UMetrics::GetPlayerPath()
 	FString temp;
 	temp.Append(PlayerPath.ToString());
 	UE_LOG(LogTemp, Warning, TEXT("PlayerPath: %s\n"), *temp);
-	
-}
-
-
-void UMetrics::CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path)
-{
-	//TODO create json object
-	//TODO Call Printer
-	return;
 }
 
 
 void UMetrics::FileWriter(FString JSONObject, FString file, bool isJSON)
 {
 	FString FilePath;
-	FilePath = FPaths::GameContentDir();
-	//UE_LOG(LogTemp, Warning, TEXT("Path: %s"), *FilePath);
-	//FString SaveDirectory = FString("X:/WorkSpace/Unreal/Projects/VREducation/Senior/Content/TempFiles");
-	//FString SaveDirectory = FString("C:/Users/Danny/Documents/Unreal Projects/VRForEducation/VRForEducation/Senior/Content/TempFiles");
 	FString SaveDirectory;
-	SaveDirectory = FilePath + "TempFiles";
-	FString FileName;
 	FString TextToSave;
+	FString FileName;
+
+	FilePath = FPaths::GameContentDir();
+	SaveDirectory = FilePath + "TempFiles";
 	TextToSave += *JSONObject;
 	TextToSave.Append("\r\n");
 

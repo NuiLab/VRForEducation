@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Runtime/Core/Public/GenericPlatform/GenericPlatformFile.h"
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Core/Public/HAL/PlatformFilemanager.h"
 #include "Runtime/Core/Public/Misc/FileHelper.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
@@ -36,15 +37,15 @@ struct FPlayerPath {
 	
 	FString ToString()
 	{
-		float x = PlayerLocation.X;
-		float y = PlayerLocation.Y;
-		float z = PlayerLocation.Z;
-		float pitch = PlayerRotation.Pitch;
-		float yaw = PlayerRotation.Yaw;
-		float roll = PlayerRotation.Roll;
+		FString x = FString::SanitizeFloat(PlayerLocation.X);
+		FString y = FString::SanitizeFloat(PlayerLocation.Y);
+		FString z = FString::SanitizeFloat(PlayerLocation.Z);
+		FString pitch = FString::SanitizeFloat(PlayerRotation.Pitch);
+		FString yaw = FString::SanitizeFloat(PlayerRotation.Yaw);
+		FString roll = FString::SanitizeFloat(PlayerRotation.Roll);
 				
 		FString ToStringReturn;
-		ToStringReturn = "{\"location\" : \"" + FString::SanitizeFloat(x) + ',' + FString::SanitizeFloat(y) + ',' + FString::SanitizeFloat(z) + "\", \"rotation\" : \"" + FString::SanitizeFloat(pitch) + "," + FString::SanitizeFloat(yaw) + "," + FString::SanitizeFloat(roll) + "\"}";
+		ToStringReturn = "{\"location\" : \"" + x + ',' + y + ',' + z + "\", \"rotation\" : \"" + pitch + "," + yaw + "," + roll + "\"}";
 
 		return  ToStringReturn;
 	}
@@ -92,8 +93,6 @@ public:
 	void GetDate(FDateTime &current);
 
 	void GetTime(FTimespan &current);
-
-	void CreateJSON(int32 id, FDateTime date, FRoom roomOne, FRoom roomTwo, FRoom roomThree, FTimespan startGame, FTimespan endGame, TArray<FPlayerPath> path);
 
 	void FileWriter(FString JSONObject, FString file, bool isJSON);
 
