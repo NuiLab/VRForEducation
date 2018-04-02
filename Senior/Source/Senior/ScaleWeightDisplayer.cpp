@@ -60,7 +60,6 @@ void UScaleWeightDisplayer::GetWeight(int left, int right)
 	else
 	{
 		DisplayWeight(left, right);
-		counter++;
 	}
 }
 
@@ -69,17 +68,17 @@ void UScaleWeightDisplayer::DisplayWeight(int left, int right)
 {
 	if (left > right)
 	{
-		FVector heightL = { 0.0f, -4.0f, -15.0f };
-		FVector heightR = { 0.0f, 4.0f, 15.0f };
-		FRotator tiltDeg = { 15.0f, 0.0f, 0.0f };
+		FVector heightL = { 0.0f, -3.0f, -10.0f };
+		FVector heightR = { 0.0f, 3.0f, 10.0f };
+		FRotator tiltDeg = { 10.0f, 0.0f, 0.0f };
 		MagicScale.Broadcast(heightL, heightR, tiltDeg);
 		//UE_LOG(LogTemp, Warning, TEXT("Tilted LEFT, Left: %d, Right: %d"), left, right);
 	}
 	else if (left < right)
 	{
-		FVector heightL = { 0.0f, -4.0f, 15.0f };
-		FVector heightR = { 0.0f, 4.0f, -15.0f };
-		FRotator tiltDeg = { -15.0f, 0.0f, 0.0f };
+		FVector heightL = { 0.0f, -3.0f, 10.0f };
+		FVector heightR = { 0.0f, 3.0f, -10.0f };
+		FRotator tiltDeg = { -10.0f, 0.0f, 0.0f };
 		MagicScale.Broadcast(heightL, heightR, tiltDeg);
 		//UE_LOG(LogTemp, Warning, TEXT("Tilted RIGHT, Left: %d, Right: %d"), left, right);
 	}

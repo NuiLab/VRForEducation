@@ -55,6 +55,17 @@ void UMetrics::StartGame()
 void UMetrics::EndGame()
 {
 	GetTime(EndTime);
+
+	// Get Total Tries if player didn't solve puzzle
+	if (RoomOne.TotalTries == 0)
+	{
+		RoomOne.TotalTries = ScaleUsed;
+	}
+	if (RoomThree.TotalTries == 0)
+	{
+		RoomThree.TotalTries = CauldronHeated;
+	}
+
 	FString MetricsString;
 	FString JSONString;
 	FString PathString;
@@ -159,19 +170,16 @@ void UMetrics::PuzzleSolved(FString room)
 	{
 		GetTime(RoomOne.SolvedPuzzle);
 		RoomOne.TotalTries = ScaleUsed;
-		// Update HUD Level
 	}
 	if (room == "ARR")
 	{
 		GetTime(RoomTwo.SolvedPuzzle);
 		//RoomTwo.TotalTries = ???
-		// Update HUD Level
 	}
 	if (room == "FOR")
 	{
 		GetTime(RoomThree.SolvedPuzzle);
 		RoomThree.TotalTries = CauldronHeated;
-		// Update HUD Level
 	}
 }
 

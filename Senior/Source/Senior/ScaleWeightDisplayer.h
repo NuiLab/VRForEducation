@@ -48,7 +48,4 @@ private:
 
 	// Weight for right side of scale
 	int right;
-
-	// Counter for the number of times the scale was activated
-	int counter = 0;
 };
