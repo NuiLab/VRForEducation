@@ -108,7 +108,7 @@ public:
 
 private:
 	// Metrics
-	int64 PlayerID = 1;
+	int32 PlayerID;
 	FDateTime Date;
 	FTimespan StartTime;
 	FTimespan EndTime;

@@ -20,7 +20,7 @@ void UMetrics::BeginPlay()
 	Player = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
 	StartGame();
 	GetWorld()->GetTimerManager().SetTimer(Handle, this, &UMetrics::GetPlayerPath, 1.0f, true, 0.0f);
-	//PlayerID = Date.ToUnixTimestamp();
+	PlayerID = StartTime.GetTotalSeconds() * FMath::RandRange(1, 1000);
 }
 
 
