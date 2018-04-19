@@ -61,6 +61,10 @@ void UMetrics::EndGame()
 	{
 		RoomOne.TotalTries = ScaleUsed;
 	}
+	if (RoomTwo.TotalTries == 0)
+	{
+		RoomTwo.TotalTries = ShelfCleared;
+	}
 	if (RoomThree.TotalTries == 0)
 	{
 		RoomThree.TotalTries = CauldronHeated;
@@ -174,7 +178,7 @@ void UMetrics::PuzzleSolved(FString room)
 	if (room == "ARR")
 	{
 		GetTime(RoomTwo.SolvedPuzzle);
-		//RoomTwo.TotalTries = ???
+		RoomTwo.TotalTries = ShelfCleared;
 	}
 	if (room == "FOR")
 	{

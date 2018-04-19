@@ -102,6 +102,10 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = "Metric")
 		int32 ScaleUsed = 0;
 
+	/** Number of times the Shelf was cleared. */
+	UPROPERTY(BlueprintReadWrite, Category = "Metric")
+		int32 ShelfCleared = 0;
+
 	/** Number of times the Cauldron was heated. */
 	UPROPERTY(BlueprintReadWrite, Category = "Metric")
 		int32 CauldronHeated = 0;
